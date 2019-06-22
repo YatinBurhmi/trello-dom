@@ -72,7 +72,7 @@ async function updateItems() {
     { method: "PUT" }
   );
   if (response.status === 200) {
-      $(this).next().css({ "text-decoration": this.checked ? "line-through" : "none" });
+      $(this).next().toggleClass("complete")
   }
 }
 
