@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <script type="text/javascript" src="/trello.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/trello.css">
+
 </head>
+
 <body>
-    
+  <script type="text/javascript" src="/trello.js" async></script>
+  <div class="container">
+    <div class="section">
+      <h1>ToDos</h1>
+      <div id="input-form">
+        <input type="text" id="input-text" value="">
+        <button type="submit" id="submit">SUBMIT</button>
+      </div>
+      <ul id="checkItems"></ul>
+    </div>
+  </div>
 </body>
+
 </html>
