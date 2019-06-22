@@ -78,7 +78,7 @@ async function updateItems() {
 
 async function addItems(){
   let inputVal = $('#input-text').val();
-  $('#input-text').attr("value",null);
+  $('#input-text').val('')   
   let cardId = "5d0dc61a3c90de474567b4ab";
   let response = await fetch(`https://api.trello.com/1/checklists/5d0dc620cbf6162feaa636a6/checkItems?name=${inputVal}&key=${key}&token=${token}`,{method:"POST"});
   let element = await response.json(); 
