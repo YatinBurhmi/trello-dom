@@ -4,13 +4,19 @@ const key = "6668897ab81223587d6c1a4e78ae38d0";
 const linkOfApi = `https://api.trello.com/1/lists/5cf8b1506ed12e0a7718bde6/cards?key=${key}&token=${token}`;
 
 const getCardId = async link => {
+  try{
   const data = await fetch(link);
   const response = await data.json();
   let cardIdArr = response.map(item => item.id);
   return cardIdArr;
+  }
+  catch(error){
+    console.log(error)
+  }
 };
 
 const getCheckListItems = async link => {
+  try{
   const cardIdArr = await getCardId(link);
   const dataOfCheckItems = cardIdArr.map(async item => {
     const checkListData = await fetch(
@@ -19,17 +25,18 @@ const getCheckListItems = async link => {
     );
     const response = await checkListData.json();
     return response;
-    // console.log(response)
-    // display(response[0]);
   });
   return Promise.all(dataOfCheckItems);
+}
+catch(error){
+  console.log(error)
+}
 };
 
 async function display(link) {
+  try{
   let objArr = await getCheckListItems(link)
-  // console.log(objArr);
   objArr.map((obj)=>{
-    // console.log(obj[0])
     let cardId = obj[0].idCard;
     obj[0].checkItems.forEach(element => {
       let liHtml = `<li>
@@ -44,23 +51,27 @@ async function display(link) {
       }>X</button></li>`;
       $("#checkItems").append(liHtml);
     });
-  })
+  })}
+  catch(error){
+    console.log(error)
+  }
 }
-// display(linkOfApi)
 
 async function deleteItems() {
   let cardId = $(this).attr("card-id");
   let itemId = $(this).attr("item-id");
-  console.log(itemId);
+  try{
   let response = await fetch(
     `https://api.trello.com/1/cards/${cardId}/checkItem/${itemId}?key=${key}&token=${token}`,
     { method: "DELETE" }
   );
-  // response = await response.json();
   if (response.status === 200) {
     $(this)
       .parent()
       .remove();
+  }}
+  catch(error){
+    console.log(error)
   }
 }
 
@@ -68,23 +79,30 @@ async function updateItems() {
   let cardId = $(this).attr("card-id");
   let itemId = $(this).attr("item-id");
   let state = this.checked ? "complete" : "incomplete";
-
+  try{
   let response = await fetch(
     `https://api.trello.com/1/cards/${cardId}/checkItem/${itemId}?state=${state}&key=${key}&token=${token}`,
     { method: "PUT" }
   );
   if (response.status === 200) {
       $(this).next().toggleClass("complete")
+  }}
+  catch(error){
+    console.log(error)
   }
 }
 
-async function addItems(){
+async function addItems(event){
+  event.preventDefault();
   let inputVal = $('#input-text').val();
   $('#input-text').val('')   
   let cardId = "5d0dc61a3c90de474567b4ab";
+  try{
   let response = await fetch(`https://api.trello.com/1/checklists/5d0dc620cbf6162feaa636a6/checkItems?name=${inputVal}&key=${key}&token=${token}`,{method:"POST"});
   let element = await response.json(); 
   if(response.status === 200){
+    // if(event.which === 13){
+    // //   alert("enter pressed ")
    let liHtml = `<li>
                 <input type="checkbox" id ="checkbox-id"card-id = ${cardId} item-id=${
       element.id
@@ -96,13 +114,20 @@ async function addItems(){
       element.id
     }>X</button></li>`;
     $("#checkItems").append(liHtml);
-  } 
-  // console.log(data);
+  }}
+  catch(error){
+    console.log(error)
+  }
 }
 
 async function runProject(link){
+  try{
   await display(link);
   await getCheckListItems(link);
+  }
+  catch(error){
+    console.log(error)
+  }
 }
 
 runProject(linkOfApi)
@@ -110,3 +135,11 @@ runProject(linkOfApi)
 $("#checkItems").on("click", "#delete", deleteItems);
 $("#checkItems").on("click", "#checkbox-id", updateItems);
 $("#input-form").on("click", "#submit", addItems)
+// $("#input-form").on("keypress", "#input-text", addItems)
+
+
+// $(".input1").on('keyup', function (e) {
+//   if (e.keyCode == 13) {
+//       // Do something
+//   }
+// });

@@ -25,3 +25,7 @@ li{
 li{
     list-style: none;
 }
+
+#submit{
+    display:none;
+}
