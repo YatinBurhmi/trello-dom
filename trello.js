@@ -101,8 +101,6 @@ async function addItems(event){
   let response = await fetch(`https://api.trello.com/1/checklists/5d0dc620cbf6162feaa636a6/checkItems?name=${inputVal}&key=${key}&token=${token}`,{method:"POST"});
   let element = await response.json(); 
   if(response.status === 200){
-    // if(event.which === 13){
-    // //   alert("enter pressed ")
    let liHtml = `<li>
                 <input type="checkbox" id ="checkbox-id"card-id = ${cardId} item-id=${
       element.id
@@ -135,11 +133,3 @@ runProject(linkOfApi)
 $("#checkItems").on("click", "#delete", deleteItems);
 $("#checkItems").on("click", "#checkbox-id", updateItems);
 $("#input-form").on("click", "#submit", addItems)
-// $("#input-form").on("keypress", "#input-text", addItems)
-
-
-// $(".input1").on('keyup', function (e) {
-//   if (e.keyCode == 13) {
-//       // Do something
-//   }
-// });
