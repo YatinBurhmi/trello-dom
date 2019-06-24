@@ -18,33 +18,35 @@ const getCheckListItems = async link => {
       { method: "GET" }
     );
     const response = await checkListData.json();
-    // return response;
-    display(response[0]);
+    return response;
+    // console.log(response)
+    // display(response[0]);
   });
-  // return Promise.all(dataOfCheckItems);
+  return Promise.all(dataOfCheckItems);
 };
 
-// getCheckListItems(id).then(data => {
-
-// })
-
-function display(obj) {
-  let cardId = obj.idCard;
-  obj.checkItems.forEach(element => {
-    let liHtml = `<li>
-                <input type="checkbox" id ="checkbox-id"card-id = ${cardId} item-id=${
-      element.id
-    } ${element.state === "complete" ? "checked" : null}>
-                <span class=${element.state} id="checkItemSpanId">${
-      element.name
-    }</span>
-                <button id= "delete" card-id = ${cardId} item-id=${
-      element.id
-    }>X</button></li>`;
-    $("#checkItems").append(liHtml);
-  });
+async function display(link) {
+  let objArr = await getCheckListItems(link)
+  // console.log(objArr);
+  objArr.map((obj)=>{
+    // console.log(obj[0])
+    let cardId = obj[0].idCard;
+    obj[0].checkItems.forEach(element => {
+      let liHtml = `<li>
+                  <input type="checkbox" id ="checkbox-id"card-id = ${cardId} item-id=${
+        element.id
+      } ${element.state === "complete" ? "checked" : null}>
+                  <span class=${element.state} id="checkItemSpanId">${
+        element.name
+      }</span>
+                  <button id= "delete" card-id = ${cardId} item-id=${
+        element.id
+      }>X</button></li>`;
+      $("#checkItems").append(liHtml);
+    });
+  })
 }
-
+// display(linkOfApi)
 
 async function deleteItems() {
   let cardId = $(this).attr("card-id");
@@ -98,7 +100,12 @@ async function addItems(){
   // console.log(data);
 }
 
-getCheckListItems(linkOfApi);
+async function runProject(link){
+  await display(link);
+  await getCheckListItems(link);
+}
+
+runProject(linkOfApi)
 
 $("#checkItems").on("click", "#delete", deleteItems);
 $("#checkItems").on("click", "#checkbox-id", updateItems);
